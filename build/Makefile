@@ -1,5 +1,5 @@
 build: sid-chroot.tar
-	docker build -t jmtd/debian:buildd ./
+	docker build -t jmtd/debian:build ./
 
 sid-chroot.tar: sid-chroot
 	cd sid-chroot && tar cf ../sid-chroot.tar ./
