@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+# derived from Ikiwiki setup automator.
+# XXX: permit override by env var?
+require IkiWiki::Setup::Automator;
+
+our $wikiname="Ikiwiki-in-a-box";
+our $wikiname_short=IkiWiki::Setup::Automator::sanitize_wikiname($wikiname);
+our $rcs="git";
+our $admin="admin";
+use Net::Domain q{hostfqdn};
+our $domain=hostfqdn() || "localhost";
+
+IkiWiki::Setup::Automator->import(
+	wikiname => $wikiname,
+	adminuser => [$admin],
+	rcs => $rcs,
+	srcdir => "$ENV{HOME}/$wikiname_short",
+	destdir => "$ENV{HOME}/public_html/$wikiname_short",
+	repository => "$ENV{HOME}/$wikiname_short.".($rcs eq "monotone" ? "mtn" : $rcs),
+	dumpsetup => "$ENV{HOME}/$wikiname_short.setup",
+	url => "http://$domain/~$ENV{USER}/$wikiname_short",
+	cgiurl => "http://$domain/~$ENV{USER}/$wikiname_short/ikiwiki.cgi",
+	cgi_wrapper => "$ENV{HOME}/public_html/$wikiname_short/ikiwiki.cgi",
+	adminemail => "admin\@$domain",
+	add_plugins => [qw{goodstuff websetup}],
+	disable_plugins => [qw{}],
+	libdir => "$ENV{HOME}/.ikiwiki",
+	rss => 1,
+	atom => 1,
+	syslog => 0,
+)
