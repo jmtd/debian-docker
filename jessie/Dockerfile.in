@@ -6,4 +6,7 @@ RUN apt-get update \
 	&& apt-get -y autoremove \
 	&& apt-get clean \
 	&& find /var/lib/apt/lists -type f -delete
+LABEL org.redmars.docker.VcsType git
+LABEL org.redmars.docker.VcsUrl  http://github.com/jmtd/debian-docker
+LABEL org.redmars.docker.VcsRef  SUBSTITUTION_FAILED
 CMD ["/bin/bash"]

@@ -1,5 +1,10 @@
-build: jessie-chroot.tar
+build: jessie-chroot.tar Dockerfile
 	docker build -t jmtd/debian:jessie ./
+	rm Dockerfile
+
+rev=$(shell git rev-parse --verify HEAD)
+Dockerfile: Dockerfile.in
+	sed 's/SUBSTITUTION_FAILED/$(rev)/' $< >$@
 
 jessie-chroot.tar: jessie-chroot
 	cd jessie-chroot && tar cf ../jessie-chroot.tar ./
