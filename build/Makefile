@@ -6,7 +6,7 @@ sid-chroot.tar: sid-chroot
 
 sid-chroot:
 	mkdir -p sid-chroot
-	debootstrap --variant buildd sid ./sid-chroot http://http.debian.net/debian
+	debootstrap --variant buildd sid ./sid-chroot http://httpredir.debian.org/debian/
 	chroot ./sid-chroot apt-get clean
 
 clean:

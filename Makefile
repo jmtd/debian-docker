@@ -8,6 +8,7 @@
 release ?= jessie
 prefix  ?= jmtd
 arch    ?= amd64
+mirror  ?= http://httpredir.debian.org/debian/
 tag     ?= $(release)-$(arch)
 
 build: $(tag)/root.tar $(tag)/Dockerfile
@@ -25,7 +26,7 @@ $(tag)/root.tar: roots/$(tag) $(tag)
 
 roots/$(tag):
 	mkdir -p $@ \
-		&& debootstrap --arch $(arch) $(release) $@ http://http.debian.net/debian \
+		&& debootstrap --arch $(arch) $(release) $@ $(mirror) \
 		&& chroot $@ apt-get clean
 
 clean:
