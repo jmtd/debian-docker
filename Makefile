@@ -31,7 +31,7 @@ roots/$(tag):
 
 clean:
 	rm -f $(tag)/root.tar $(tag)/Dockerfile
-	rm -r roots/$(tag)
+	rm -rf roots/$(tag)
 	test -d $(tag) && rmdir $(tag)
 
 .PHONY: clean build
