@@ -15,13 +15,8 @@ WORKDIR /home/ikiwiki
 ENV USER ikiwiki
 
 ADD auto.setup /home/ikiwiki/
-RUN chown ikiwiki auto.setup /var/www
+RUN chown ikiwiki auto.setup
 
-RUN chown ikiwiki /usr/lib/cgi-bin
-
-# Hacks so ikiwiki automator works
-# so mkdir works
-RUN rm -rf /var/www/html
 # silence a non-fatal error
 RUN chown ikiwiki /etc/ikiwiki/wikilist
 
@@ -29,8 +24,8 @@ RUN chown ikiwiki /etc/ikiwiki/wikilist
 # for ikiwiki: cgi
 # for git-...-: cgi, alias, auth, setenv
 # alias and setenv seemingly built-in.
-RUN lighttpd-enable-mod cgi auth
-# we may also decide to want userdirs
+RUN lighttpd-enable-mod cgi auth userdir
+# userdir as a hack until we put our own lighttpd in
 
 USER ikiwiki
 # more todo
@@ -45,8 +40,7 @@ RUN git config --global user.name "ikiwiki-in-a-box automator" \
 #VOLUME ["/home/ikiwiki/Ikiwiki-in-a-box.git"]
 
 EXPOSE 80
-# XXX: ideally we will not be a privileged user. But what do we need to do?
-# receive hooks, write to the wiki...
+# XXX: ideally we will not be a privileged user.
 USER root
 
 ADD lighttpd-ikiwiki.conf /etc/lighttpd/conf-enabled/
