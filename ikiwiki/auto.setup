@@ -18,7 +18,7 @@ IkiWiki::Setup::Automator->import(
     destdir => "$ENV{HOME}/public_html",
 	repository => "$ENV{HOME}/$wikiname_short.".($rcs eq "monotone" ? "mtn" : $rcs),
 	dumpsetup => "$ENV{HOME}/$wikiname_short.setup",
-	url => "/~ikiwiki",
+	url => "/",
 	cgiurl => "/ikiwiki",
 	cgi_wrapper => "$ENV{HOME}/ikiwiki.cgi",
 	adminemail => "admin\@$domain",

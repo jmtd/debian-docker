@@ -1,7 +1,8 @@
 FROM jmtd/debian:jessie-amd64
 MAINTAINER Jonathan Dowland <jmtd@debian.org>
 
-# build environment
+# root stuff #################################################################
+
 # libxml-writer-perl, see bugs.debian.org/719913
 # python-minimal for something in the autosetup
 RUN apt-get update \
@@ -14,20 +15,22 @@ RUN adduser --gecos "ikiwiki user" --disabled-password ikiwiki
 WORKDIR /home/ikiwiki
 ENV USER ikiwiki
 
-ADD auto.setup /home/ikiwiki/
-RUN chown ikiwiki auto.setup
+ADD \
+    auto.setup lighttpd.conf /home/ikiwiki/
+RUN chown ikiwiki \
+    auto.setup lighttpd.conf /home/ikiwiki/
 
 # silence a non-fatal error
 RUN chown ikiwiki /etc/ikiwiki/wikilist
 
-# lighttpd configuration.
-# for ikiwiki: cgi
-# for git-...-: cgi, alias, auth, setenv
-# alias and setenv seemingly built-in.
-RUN lighttpd-enable-mod cgi auth userdir
-# userdir as a hack until we put our own lighttpd in
+RUN lighttpd-enable-mod cgi auth
+# XXX: move away from using this
 
 USER ikiwiki
+# USER ikiwiki stuff #########################################################
+
+RUN mkdir -p var/log/lighttpd var/run var/cache/lighttpd/compress
+
 # more todo
 RUN git config --global user.name "ikiwiki-in-a-box automator" \
     && git config --global user.email null@example.org \
@@ -39,12 +42,5 @@ RUN git config --global user.name "ikiwiki-in-a-box automator" \
 ## repository (to push to)
 #VOLUME ["/home/ikiwiki/Ikiwiki-in-a-box.git"]
 
-EXPOSE 80
-# XXX: ideally we will not be a privileged user.
-USER root
-
-ADD lighttpd-ikiwiki.conf /etc/lighttpd/conf-enabled/
-
-# back to root for the dir
-
-CMD /usr/sbin/lighttpd -Df /etc/lighttpd/lighttpd.conf
+EXPOSE 8080
+CMD /usr/sbin/lighttpd -Df /home/ikiwiki/lighttpd.conf
