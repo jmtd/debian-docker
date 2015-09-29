@@ -25,8 +25,11 @@ RUN rm -rf /var/www/html
 # silence a non-fatal error
 RUN chown ikiwiki /etc/ikiwiki/wikilist
 
-# lighttpd configuration
-RUN lighttpd-enable-mod cgi
+# lighttpd configuration.
+# for ikiwiki: cgi
+# for git-...-: cgi, alias, auth, setenv
+# alias and setenv seemingly built-in.
+RUN lighttpd-enable-mod cgi auth
 # we may also decide to want userdirs
 
 USER ikiwiki
