@@ -23,9 +23,6 @@ RUN chown ikiwiki \
 # silence a non-fatal error
 RUN chown ikiwiki /etc/ikiwiki/wikilist
 
-RUN lighttpd-enable-mod cgi auth
-# XXX: move away from using this
-
 USER ikiwiki
 # USER ikiwiki stuff #########################################################
 
