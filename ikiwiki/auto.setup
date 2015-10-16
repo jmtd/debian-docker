@@ -4,7 +4,7 @@
 require IkiWiki::Setup::Automator;
 
 our $wikiname="Ikiwiki-in-a-box";
-our $wikiname_short=IkiWiki::Setup::Automator::sanitize_wikiname($wikiname);
+our $wikiname_short="Ikiwiki-in-a-box";
 our $rcs="git";
 our $admin="admin";
 use Net::Domain q{hostfqdn};
@@ -16,7 +16,7 @@ IkiWiki::Setup::Automator->import(
 	rcs => $rcs,
 	srcdir => "$ENV{HOME}/$wikiname_short",
     destdir => "$ENV{HOME}/public_html",
-	repository => "$ENV{HOME}/$wikiname_short.".($rcs eq "monotone" ? "mtn" : $rcs),
+	repository => "$ENV{HOME}/$wikiname_short.git",
 	dumpsetup => "$ENV{HOME}/$wikiname_short.setup",
 	url => "http://localhost/",
 	cgiurl => "http://localhost/ikiwiki",
