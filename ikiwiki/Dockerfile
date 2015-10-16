@@ -7,7 +7,7 @@ MAINTAINER Jonathan Dowland <jmtd@debian.org>
 # python-minimal for something in the autosetup
 RUN apt-get update \
     && apt-get install -y ikiwiki git lighttpd python-minimal \
-                          libxml-writer-perl \
+                          libxml-writer-perl apache2-utils \
     && apt-get clean \
     && find /var/lib/apt/lists -type f -delete
 
@@ -16,9 +16,9 @@ WORKDIR /home/ikiwiki
 ENV USER ikiwiki
 
 ADD \
-    auto.setup lighttpd.conf /home/ikiwiki/
+    auto.setup git-auth.conf lighttpd.conf /home/ikiwiki/
 RUN chown ikiwiki \
-    auto.setup lighttpd.conf /home/ikiwiki/
+    auto.setup git-auth.conf lighttpd.conf /home/ikiwiki/
 
 # silence a non-fatal error
 RUN chown ikiwiki /etc/ikiwiki/wikilist
@@ -32,6 +32,11 @@ RUN mkdir -p var/log/lighttpd var/run var/cache/lighttpd/compress
 RUN git config --global user.name "ikiwiki-in-a-box automator" \
     && git config --global user.email null@example.org \
     && printf "password\npassword" | ikiwiki --setup auto.setup
+
+# set up htpasswd file (TODO: get Ikiwiki to read it too)
+RUN htpasswd -cb /home/ikiwiki/htpasswd admin password
+
+RUN cd Ikiwiki-in-a-box.git && git config http.receivepack true
 
 # destdir (for e.g. external httpd)
 # NOTE: permissions are fucked.
