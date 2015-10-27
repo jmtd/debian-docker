@@ -59,7 +59,7 @@ RUN chown ikiwiki \
 USER ikiwiki
 # USER ikiwiki stuff #########################################################
 
-RUN mkdir -p var/log/lighttpd var/run var/cache/lighttpd/compress
+RUN mkdir -p var/log/lighttpd var/run var/cache/lighttpd/compress git
 
 # more todo
 RUN git config --global user.name "ikiwiki-in-a-box automator" \
@@ -69,13 +69,18 @@ RUN git config --global user.name "ikiwiki-in-a-box automator" \
 # set up htpasswd file (TODO: get Ikiwiki to read it too)
 RUN htpasswd -cb /home/ikiwiki/htpasswd admin password
 
-RUN cd Ikiwiki-in-a-box.git && git config http.receivepack true
+# Set up git repos for libdir (plugins) and templates (page templates)
+RUN sh -xc 'for r in libdir templates; do \
+        GIT_DIR=git/$r.git git init \
+        && git clone git/$r.git $r \
+        && echo "cd /home/ikiwiki/$r && git pull" > git/$r.git/hooks/post-update \
+        && chmod +x git/$r.git/hooks/post-update \
+        ; done'
 
-# destdir (for e.g. external httpd)
-# NOTE: permissions are fucked.
-#VOLUME ["/home/ikiwiki/public_html/Ikiwiki-in-a-box"]
-## repository (to push to)
-#VOLUME ["/home/ikiwiki/Ikiwiki-in-a-box.git"]
+# fix git repo settings for access via HTTP
+RUN sh -xc 'for r in git/*.git; do \
+        ( cd $r && git config http.receivepack true && git config receive.denynonfastforwards false ) \
+        ; done'
 
 EXPOSE 8080
 CMD /usr/sbin/lighttpd -Df /home/ikiwiki/lighttpd.conf
