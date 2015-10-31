@@ -19,6 +19,15 @@ What I use to build `jmtd/debian:*` docker images on the Docker registry.
    version of *wheezy*. This could be used for anything requiring a 32-bit
    toolchain. Approx 166M in size.
 
+## Getting started
+To build your own images, clone this repo, cd to the local path and run
+
+```
+export SUITE=jessie-amd64
+sudo -E make prefix=$USER tag=$SUITE roots/$SUITE $SUITE/root.tar build
+```
+You can also set a local mirror by appending mirror= to the command, the default is httpredir.debian.net
+
 ## Future work
 
 I don't want to maintain a zillion different images, but there are a few other
