@@ -1,6 +1,7 @@
 FROM scratch
 MAINTAINER Jonathan Dowland <jmtd@debian.org>
 ADD root.tar /
+RUN echo "deb http://security.debian.org jessie/updates main contrib non-free" >> /etc/apt/sources.list
 RUN apt-get update \
 	&& apt-get -y upgrade \
 	&& apt-get -y autoremove \
