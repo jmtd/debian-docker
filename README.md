@@ -1,5 +1,5 @@
 # debian-docker
-scripts and Dockerfiles to build jmtd/debian* docker images
+scripts and Dockerfiles to build jmtd/debian\* docker images
 
 What I use to build `jmtd/debian:*` docker images on the Docker registry.
 
@@ -20,13 +20,15 @@ What I use to build `jmtd/debian:*` docker images on the Docker registry.
    toolchain. Approx 166M in size.
 
 ## Getting started
+
 To build your own images, clone this repo, cd to the local path and run
 
 ```
-export SUITE=jessie-amd64
-sudo -E make prefix=$USER tag=$SUITE roots/$SUITE $SUITE/root.tar build
+sudo make release=jessie prefix=jmtd arch=amd64 mirror=http://httpredir.debian.org/debian/
 ```
-You can also set a local mirror by appending mirror= to the command, the default is httpredir.debian.net
+
+All the arguments above are optional. The values in the example above are
+the defaults. The resulting image would be tagged `jmtd/debian:jessie-amd64`.
 
 ## Future work
 
