@@ -21,12 +21,18 @@ $(tag)/Dockerfile: Dockerfile.in $(tag)
 $(tag):
 	mkdir $@
 
-$(tag)/root.tar: roots/$(tag) $(tag)
+$(tag)/root.tar: roots/$(tag)/etc $(tag)
 	cd roots/$(tag) && tar cf ../../$(tag)/root.tar ./
 
+# slightly awkward indirection to avoid a bug whereby user runs
+# this unprivileged, creates the dir but debootstrap fails, but
+# the target is satisfied and a subsequent run believes the rule
+# satisfied
 roots/$(tag):
-	mkdir -p $@ \
-		&& debootstrap --arch $(arch) $(release) $@ $(mirror) \
+	mkdir -p $@
+
+roots/$(tag)/etc: roots/$(tag)
+	debootstrap --arch $(arch) $(release) $@ $(mirror) \
 		&& chroot $@ apt-get clean
 
 clean:
