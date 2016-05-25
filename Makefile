@@ -33,8 +33,8 @@ roots/$(tag):
 	mkdir -p $@
 
 roots/$(tag)/etc: roots/$(tag)
-	debootstrap --arch $(arch) $(release) $@ $(mirror) \
-		&& chroot $@ apt-get clean
+	debootstrap --arch $(arch) $(release) $< $(mirror) \
+		&& chroot $< apt-get clean
 
 clean:
 	rm -f $(tag)/root.tar $(tag)/Dockerfile
