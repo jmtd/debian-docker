@@ -30,6 +30,18 @@ sudo make release=jessie prefix=jmtd arch=amd64 mirror=http://httpredir.debian.o
 All the arguments above are optional. The values in the example above are
 the defaults. The resulting image would be tagged `jmtd/debian:jessie-amd64`.
 
+## Proxy support
+
+You can run make with a http_proxy option to use something like apt-cacher-ng:
+
+```
+sudo make http_proxy="http://10.10.5.1:3142"
+```
+
+If you do this, debootstrap will use this proxy to download packages.
+Additionally a /etc/apt/apt.conf.d/01proxy file will be added to the finished
+image, so that all future apt runs inside Docker will also use that proxy.
+
 ## Future work
 
 I don't want to maintain a zillion different images, but there are a few other
