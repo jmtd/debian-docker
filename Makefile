@@ -28,6 +28,9 @@ $(tag)/root.tar: roots/$(tag).ok $(tag)
 roots/$(tag).ok:
 	debootstrap --arch $(arch) $(release) roots/$(tag) $(mirror) \
 		&& chroot roots/$(tag) apt-get clean
+	if [ "$(http_proxy)" ]; then \
+		echo 'Acquire::HTTP::Proxy "$(http_proxy)";' > roots/$(tag)/etc/apt/apt.conf.d/01proxy; \
+	fi
 	touch $@
 
 clean:
