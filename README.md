@@ -21,9 +21,12 @@ What I use to build `jmtd/debian:*` docker images on the Docker registry.
 
 ## Getting started
 
-To build your own images, clone this repo, cd to the local path and run
+To build your own images run
 
-```
+```bash
+sudo apt-get install git make debootstrap
+git clone https://github.com/jmtd/debian-docker.git
+cd debian-docker/
 sudo make release=jessie prefix=jmtd arch=amd64 mirror=http://httpredir.debian.org/debian/
 ```
 
