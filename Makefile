@@ -21,23 +21,20 @@ $(tag)/Dockerfile: Dockerfile.in $(tag)
 $(tag):
 	mkdir $@
 
-$(tag)/root.tar: roots/$(tag)/etc $(tag)
+$(tag)/root.tar: roots/$(tag).ok $(tag)
 	cd roots/$(tag) \
 		&& tar -c --numeric-owner -f ../../$(tag)/root.tar ./
 
-# slightly awkward indirection to avoid a bug whereby user runs
-# this unprivileged, creates the dir but debootstrap fails, but
-# the target is satisfied and a subsequent run believes the rule
-# satisfied
-roots/$(tag):
-	mkdir -p $@
-
-roots/$(tag)/etc: roots/$(tag)
-	debootstrap --arch $(arch) $(release) $< $(mirror) \
-		&& chroot $< apt-get clean
+roots/$(tag).ok:
+	debootstrap --arch $(arch) $(release) roots/$(tag) $(mirror) \
+		&& chroot roots/$(tag) apt-get clean
+	if [ "$(http_proxy)" ]; then \
+		echo 'Acquire::HTTP::Proxy "$(http_proxy)";' > roots/$(tag)/etc/apt/apt.conf.d/01proxy; \
+	fi
+	touch $@
 
 clean:
-	rm -f $(tag)/root.tar $(tag)/Dockerfile
+	rm -f $(tag)/root.tar $(tag)/Dockerfile roots/$(tag).ok
 	rm -r roots/$(tag)
 	test -d $(tag) && rmdir $(tag)
 
