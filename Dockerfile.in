@@ -16,7 +16,7 @@ RUN if grep -q jessie /etc/apt/sources.list; then \
 
 RUN apt-get update \
 	&& apt-get -y upgrade \
-	&& apt-get -y autoremove \
+	&& apt-get -y --purge autoremove \
 	&& apt-get clean \
 	&& find /var/lib/apt/lists -type f -delete
 
