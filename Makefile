@@ -22,8 +22,8 @@ $(tag):
 	mkdir $@
 
 $(tag)/root.tar: roots/$(tag)/etc $(tag)
-	cd roots/$(tag) \
-		&& tar -c --numeric-owner -f ../../$(tag)/root.tar ./
+	cd roots/$(tag)/etc \
+		&& tar -c --numeric-owner -f ../../../$(tag)/root.tar ./
 
 # slightly awkward indirection to avoid a bug whereby user runs
 # this unprivileged, creates the dir but debootstrap fails, but
