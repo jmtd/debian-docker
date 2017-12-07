@@ -9,15 +9,15 @@ What I use to build `jmtd/debian:*` docker images on the Docker registry.
    includes `apt`, `build-essential` and their dependencies. It's suitable
    as a base image for building a Debian package, or the basis of a *buildd*.
 
- * **jessie**: a base debian installation of *jessie* (current *stable*).
+ * **stretch**: a base debian installation of *stretch* (current *stable*).
+   Approx. 220M in size.
+
+ * **jessie**: a base debian installation of *jessie* (*oldstable*).
    Approx. 218M in size.
 
- * **wheezy**: a base debian installation of *wheezy* (*oldstable*).
-   Approx 163M in size.
-
  * **wheezy-i386**: a base debian installation of the i386-architecture
-   version of *wheezy*. This could be used for anything requiring a 32-bit
-   toolchain. Approx 166M in size.
+   version of *wheezy* (oldoldstable). This could be used for anything
+   requiring a 32-bit toolchain. Approx 166M in size.
 
 ## Getting started
 
@@ -27,19 +27,20 @@ To build your own images run
 sudo apt-get install git make debootstrap
 git clone https://github.com/jmtd/debian-docker.git
 cd debian-docker/
-sudo make release=jessie prefix=jmtd arch=amd64 mirror=http://httpredir.debian.org/debian/
+sudo make release=stretch prefix=jmtd arch=amd64 mirror=http://httpredir.debian.org/debian/
 ```
 
 All the arguments above are optional. The values in the example above are
-the defaults. The resulting image would be tagged `jmtd/debian:jessie-amd64`.
+the defaults. The resulting image would be tagged `jmtd/debian:stretch-amd64`.
 
 ## Future work
 
 I don't want to maintain a zillion different images, but there are a few other
 variants that might be of use for people:
 
- * Now *jessie* is released, I'll probably add *jessie-i386* and phase out
-   *wheezy-i386*.
+ * possibly move the `debootstrap` step to execute within a container, so you
+   don't need it on your host system
+ * Update the i386 variant image to stable
  * Perhaps introduce floating release tags, e.g. `:stable`.
  * A `wine` base image, derived from (probably) `jessie-i386`.
  * Possibly a base X image, with x11vnc, uxterm and a lightweight window

@@ -5,7 +5,7 @@
 #       sudo make release=wheezy arch=i386 tag=wheezy-i386
 
 # variables that can be overridden:
-release ?= jessie
+release ?= stretch
 prefix  ?= jmtd
 arch    ?= amd64
 mirror  ?= http://httpredir.debian.org/debian/
