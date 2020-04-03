@@ -1,4 +1,18 @@
-# debian-docker
+# debian-docker **⚠️** DEPRECATED AND ARCHIVED **⚠️**
+
+----
+
+> **⚠️** **DEPRECATED** **⚠️** - most of the reasons for this stuff have been addressed.
+> please take a look at the [official Debian docker images](https://hub.docker.com/_/debian)
+> and the [debuerreotype tooling](https://github.com/debuerreotype/debuerreotype) for
+> building them reproducibly.
+> 
+> This repository will be archived read-only and no further updates made here.
+> Thanks for all your input over the years!
+> **⚠️**
+
+----
+
 scripts and Dockerfiles to build jmtd/debian\* docker images
 
 What I use to build `jmtd/debian:*` docker images on the Docker registry.
